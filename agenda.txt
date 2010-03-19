@@ -1,9 +1,24 @@
-hello world
-grid
-dual grid
+* Basics
+draw dual grid
+click on cell to change type
+
+* Polish
+center grid 
+shade the cells
+
+* Features
 list of functions
 UI for selecting function
 animate between functions
-shade the cells
 color schemes
 projections
+
+* Literacy
+README
+API docs
+design docs
+check Qt API doc conventions
+& -> *, for consistency w/ Qt API
+
+* Issues
+should this use a scene graph (currently) or a canvas?

@@ -11,7 +11,8 @@ QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
-class Cell : public QGraphicsItem {
+class Cell : public QGraphicsItem
+{
 public:
     enum CellState { Square, BendSinister, BendDexter };
     // if you change this, change the statics in Cell::neighbor

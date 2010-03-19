@@ -1,11 +1,10 @@
-#include "tilingwidget.h"
-#include "board.h"
-
+#include <math.h>
 #include <QDebug>
 #include <QGraphicsScene>
 #include <QWheelEvent>
 
-#include <math.h>
+#include "tilingwidget.h"
+#include "board.h"
 
 TilingWidget::TilingWidget()
     : timerId(0), board(*new Board(2,2))
@@ -15,6 +14,7 @@ TilingWidget::TilingWidget()
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(-200, -200, 400, 400);
+    scene->addItem(&board);
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -86,21 +86,6 @@ void TilingWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect.translated(2, 2), message);
     painter->setPen(Qt::black);
     painter->drawText(textRect, message);
-
-    // Grid
-    int cellWidth = 50;
-    int cellHeight = 50;
-    painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    // vertical lines
-    for (int i = 0; i <= board.cols; i++) {
-        QLineF line(QPointF(i * cellWidth, 0), QPointF(i * cellWidth, board.rows * cellHeight));
-        painter->drawLine(line);
-    }
-    // horizontal lines
-    for (int i = 0; i <= board.rows; i++) {
-        QLineF line(QPointF(0, i * cellHeight), QPointF(board.cols * cellWidth, i * cellHeight));
-        painter->drawLine(line);
-    }
 }
 
 void TilingWidget::scaleView(qreal scaleFactor)
