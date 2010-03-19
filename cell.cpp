@@ -26,9 +26,9 @@ Cell* Cell::neighbor(Direction dir) const
     return board.cell(row + dys[dir], col + dxs[dir]);
 }
 
-int Cell::centerCount() const
+bool Cell::isDivided() const
 {
-    return state == Square ? 1 : 2;
+    return state != Square;
 }
 
 struct SubPoly {

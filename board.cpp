@@ -42,67 +42,70 @@ void Board::updateCellStates()
 
 void Board::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    // Grid
-    {
-        QPainterPath path;
-        // vertical lines
-        for (int col = 0; col <= cols; col++) {
-            //QLineF line(QPointF(col * cellWidth, 0), QPointF(col * cellWidth, rows * cellHeight));
-            //painter->drawLine(line);
-            path.moveTo(col * cellWidth, 0);
-            path.lineTo(col * cellWidth, rows * cellHeight);
-        }
-        // horizontal lines
-        for (int row = 0; row <= rows; row++) {
-            path.moveTo(0, row * cellHeight);
-            path.lineTo(cols * cellWidth, row * cellHeight);
-        }
-        // dividers
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                Cell& cell = *this->cell(row, col);
-                QPointF topLeft = cell.topLeft();
-                switch (cell.state) {
-                case Cell::Square:
-                    break;
-                case Cell::BendDexter:
-                    path.moveTo(topLeft);
-                    path.lineTo(topLeft + QPointF(cellWidth, cellHeight));
-                    break;
-                case Cell::BendSinister:
-                    path.moveTo(topLeft + QPointF(0, cellHeight));
-                    path.lineTo(topLeft + QPointF(cellWidth, 0));
-                    break;
-                }
-            }
-        }
-        painter->setPen(QPen(Qt::black, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter->drawPath(path);
-    }
-
-    // Dual
-    {
-        QPainterPath path;
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                Cell& cell = *this->cell(row, col);
-                if (cell.centerCount() > 1) {
-                    // could just as well use Left and Right
-                    path.moveTo(cell.center(cell.Up));
-                    path.lineTo(cell.center(cell.Down));
-                }
-                if (row+1 < rows) {
-                    path.moveTo(cell.center(cell.Down));
-                    path.lineTo(this->cell(row+1, col)->center(cell.Up));
-                }
-                if (col+1 < cols) {
-                    path.moveTo(cell.center(cell.Right));
-                    path.lineTo(this->cell(row, col+1)->center(cell.Left));
-                }
-            }
-            painter->setPen(QPen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-            painter->drawPath(path);
-        }
-    }
+    paintGrid(painter);
+    paintDual(painter);
 }
 
+QColor Board::GridColor = Qt::darkGray;
+QColor Board::DualColor = Qt::blue;
+
+void Board::paintGrid(QPainter *painter)
+{
+    QPainterPath path;
+    // vertical lines
+    for (int col = 0; col <= cols; col++) {
+        path.moveTo(col * cellWidth, 0);
+        path.lineTo(col * cellWidth, rows * cellHeight);
+    }
+    // horizontal lines
+    for (int row = 0; row <= rows; row++) {
+        path.moveTo(0, row * cellHeight);
+        path.lineTo(cols * cellWidth, row * cellHeight);
+    }
+    // dividers
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            Cell& cell = *this->cell(row, col);
+            QPointF topLeft = cell.topLeft();
+            switch (cell.state) {
+            case Cell::Square:
+                break;
+            case Cell::BendDexter:
+                path.moveTo(topLeft);
+                path.lineTo(topLeft + QPointF(cellWidth, cellHeight));
+                break;
+            case Cell::BendSinister:
+                path.moveTo(topLeft + QPointF(0, cellHeight));
+                path.lineTo(topLeft + QPointF(cellWidth, 0));
+                break;
+            }
+        }
+    }
+    painter->setPen(QPen(GridColor, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->drawPath(path);
+}
+
+void Board::paintDual(QPainter *painter)
+{
+    QPainterPath path;
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            Cell& cell = *this->cell(row, col);
+            if (cell.isDivided()) {
+                // could just as well use Left and Right
+                path.moveTo(cell.center(cell.Up));
+                path.lineTo(cell.center(cell.Down));
+            }
+            if (row+1 < rows) {
+                path.moveTo(cell.center(cell.Down));
+                path.lineTo(this->cell(row+1, col)->center(cell.Up));
+            }
+            if (col+1 < cols) {
+                path.moveTo(cell.center(cell.Right));
+                path.lineTo(this->cell(row, col+1)->center(cell.Left));
+            }
+        }
+    }
+    painter->setPen(QPen(DualColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->drawPath(path);
+}

@@ -26,7 +26,7 @@ public:
     void setState(CellState state) { this->state = state; }
     void setState(int state) { setState(CellState(state)); }
     Cell* neighbor(Direction) const;
-    int centerCount() const;
+    bool isDivided() const;
 
     // geometry
     QPointF topLeft() const;

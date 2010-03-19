@@ -20,9 +20,15 @@ public:
 
     // QGraphicsItem API
     QRectF boundingRect() const { return QRectF(0, 0, cols * cellWidth, cols * cellHeight); }
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+    void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 private:
+    static QColor GridColor;
+    static QColor DualColor;
+
     QList<Cell *> cellList;
+
+    void paintGrid(QPainter*);
+    void paintDual(QPainter*);
 };
 
 #endif // BOARD_H

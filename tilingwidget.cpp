@@ -7,23 +7,37 @@
 #include "board.h"
 
 TilingWidget::TilingWidget()
-    : timerId(0), board(*new Board(2,2))
+    : timerId(0), board(*new Board(10,10))
 {
-    // copied from elasticnodes
-    // TODO figure out what these do, and which are necessary
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+    // TODO select this based on window size
+    // TODO rescale board when window changes
+    scene->setSceneRect(-25, -40, 540, 550);
     scene->addItem(&board);
     setScene(scene);
+    // copied from elasticnodes
+    // TODO figure out what these do, and which are necessary
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     setResizeAnchor(AnchorViewCenter);
 
-    scale(qreal(0.8), qreal(0.8));
-    setMinimumSize(400, 400);
+#if 0
+    // FIXME adding the board should do this (can a QGraphicsItem be or contain a recursive scene graph?)
+    for (int row = 0; row < board.rows; row++) {
+        for (int col = 0; col < board.cols; col++) {
+            Cell* a = board.cell(row, col);
+            Cell* aa = static_cast<QGraphicsItem*>(a);
+            QGraphicsItem* b = a;
+            scene->addItem(board.cell(row, col));
+        }
+    }
+#endif
+
+    //scale(qreal(0.8), qreal(0.8));
+    setMinimumSize(600, 600);
     setWindowTitle(tr("Tile"));
 
     board.setCellStates();
