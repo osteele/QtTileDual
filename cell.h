@@ -24,6 +24,7 @@ public:
 
     // topology
     void setState(CellState state) { this->state = state; }
+    void setState(int state) { setState(CellState(state)); }
     Cell* neighbor(Direction) const;
     int centerCount() const;
 
@@ -31,10 +32,10 @@ public:
     QPointF topLeft() const;
     QPointF center(Direction) const;
 
+    // QGraphicsItem API
     QRectF boundingRect() const;
-    QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
+    QCursor cursor() const { return Qt::PointingHandCursor; }
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 

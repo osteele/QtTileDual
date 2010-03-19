@@ -16,6 +16,7 @@ public:
     Board(int rows, int cols);
     Cell* cell(int row, int col);
     void setCellStates();
+    void updateCellStates();
 
     // QGraphicsItem API
     QRectF boundingRect() const { return QRectF(0, 0, cols * cellWidth, cols * cellHeight); }

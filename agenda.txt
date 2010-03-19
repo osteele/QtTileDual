@@ -1,10 +1,13 @@
 * Basics
 click on cell to change type
 center the grid
-more grids
+more grid types
 
 * Polish
-shade the cells
+shade the dual cells
+shade grid cells on mouseover
+smooth animation between cell types
+smooth animation of dual grid
 
 * UI controls
 set the grid width and height
@@ -23,6 +26,7 @@ design docs
 check Qt API doc conventions
 & -> *, for consistency w/ Qt API
 clean up the subpoly mess
+remove '3' magic number
 
 * Issues
 should this use a scene graph (status quo), or QtCanvas?

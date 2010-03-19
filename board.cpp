@@ -28,9 +28,16 @@ void Board::setCellStates()
     for (int row = 0; row < rows; row++) {
         for (int col = 0; col < cols; col++) {
             int state = (row + col) % 3;
-            cell(row, col)->setState(Cell::CellState(state));
+            cell(row, col)->setState(state);
         }
     }
+}
+
+void Board::updateCellStates()
+{
+    Cell& cell = *this->cell(qrand() % rows, qrand() % cols);
+    cell.setState((cell.state + 1) % 3);
+    update();
 }
 
 void Board::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

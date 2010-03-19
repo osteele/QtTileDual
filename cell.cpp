@@ -87,16 +87,8 @@ QPointF Cell::topLeft() const
 
 QRectF Cell::boundingRect() const
 {
-    qreal adjust = 2;
-    return QRectF(-10 - adjust, -10 - adjust,
-                  23 + adjust, 23 + adjust);
-}
-
-QPainterPath Cell::shape() const
-{
-    QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
-    return path;
+    QPointF tl = topLeft();
+    return QRectF(tl, tl + QPointF(board.cellWidth, board.cellHeight));
 }
 
 // TODO add lines between nodes.
@@ -120,6 +112,7 @@ QVariant Cell::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     update();
+    exit(1);
     QGraphicsItem::mousePressEvent(event);
 }
 

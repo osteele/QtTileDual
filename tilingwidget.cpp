@@ -27,12 +27,8 @@ TilingWidget::TilingWidget()
     setWindowTitle(tr("Tile"));
 
     board.setCellStates();
-}
 
-void TilingWidget::itemMoved()
-{
-    if (!timerId)
-        timerId = startTimer(1000 / 25);
+    timerId = startTimer(500);
 }
 
 void TilingWidget::keyPressEvent(QKeyEvent *event)
@@ -46,6 +42,7 @@ void TilingWidget::keyPressEvent(QKeyEvent *event)
 void TilingWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
+    board.updateCellStates();
 }
 
 void TilingWidget::wheelEvent(QWheelEvent *event)

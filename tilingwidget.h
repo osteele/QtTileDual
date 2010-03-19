@@ -12,8 +12,6 @@ class TilingWidget : public QGraphicsView
 public:
     TilingWidget();
 
-    void itemMoved();
-
 protected:
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);
