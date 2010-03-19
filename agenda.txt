@@ -1,0 +1,9 @@
+hello world
+grid
+dual grid
+list of functions
+UI for selecting function
+animate between functions
+shade the cells
+color schemes
+projections

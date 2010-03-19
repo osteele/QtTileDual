@@ -1,0 +1,16 @@
+# qmake creates these
+Info.plist
+Makefile
+*.xcodeproj/
+
+# build products
+*.o
+moc_*
+*.app/*
+
+# Qt Creator settings
+*.pro.user
+
+# workspace-local
+attic/
+outtakes.cpp
