@@ -4,7 +4,6 @@
 #include <QGraphicsItem>
 #include <QList>
 
-class TilingWidget;
 class Board;
 
 QT_BEGIN_NAMESPACE
@@ -14,6 +13,7 @@ QT_END_NAMESPACE
 class Cell : public QGraphicsItem
 {
 public:
+    // If and how the square is divided into polygons
     enum CellState { Square, BendSinister, BendDexter };
     // if you change this, change the statics in Cell::neighbor
     enum Direction { Up, Down, Left, Right };
@@ -43,9 +43,6 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     
 private:
-    //QList<Edge *> edgeList;
-    QPointF newPos;
-    //TilingWidget& widget;
     Board& board;
     int row;
     int col;

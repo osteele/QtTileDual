@@ -91,11 +91,12 @@ QRectF Cell::boundingRect() const
     return QRectF(tl, tl + QPointF(board.cellWidth, board.cellHeight));
 }
 
-// TODO add lines between nodes.
+// TODO draw the lines between nodes here?
 void Cell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     Q_UNUSED(painter);
     Q_UNUSED(option);
+    painter->drawRect(boundingRect());
 }
 
 QVariant Cell::itemChange(GraphicsItemChange change, const QVariant &value)

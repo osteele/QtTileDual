@@ -42,54 +42,66 @@ void Board::updateCellStates()
 
 void Board::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    // TODO is there a polyline type?
-
     // Grid
-    painter->setPen(QPen(Qt::black, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    // vertical lines
-    for (int i = 0; i <= cols; i++) {
-        QLineF line(QPointF(i * cellWidth, 0), QPointF(i * cellWidth, rows * cellHeight));
-        painter->drawLine(line);
-    }
-    // horizontal lines
-    for (int i = 0; i <= rows; i++) {
-        QLineF line(QPointF(0, i * cellHeight), QPointF(cols * cellWidth, i * cellHeight));
-        painter->drawLine(line);
-    }
-    // dividers
-    for (int row = 0; row < rows; row++) {
-        for (int col = 0; col < cols; col++) {
-            Cell& cell = *this->cell(row, col);
-            QPointF topLeft = cell.topLeft();
-            switch (cell.state) {
-            case Cell::Square:
-                break;
-            case Cell::BendDexter:
-                painter->drawLine(QLineF(topLeft, topLeft + QPointF(cellWidth, cellHeight)));
-                break;
-            case Cell::BendSinister:
-                painter->drawLine(QLineF(topLeft + QPointF(0, cellHeight), topLeft + QPointF(cellWidth, 0)));
-                break;
+    {
+        QPainterPath path;
+        // vertical lines
+        for (int col = 0; col <= cols; col++) {
+            //QLineF line(QPointF(col * cellWidth, 0), QPointF(col * cellWidth, rows * cellHeight));
+            //painter->drawLine(line);
+            path.moveTo(col * cellWidth, 0);
+            path.lineTo(col * cellWidth, rows * cellHeight);
+        }
+        // horizontal lines
+        for (int row = 0; row <= rows; row++) {
+            path.moveTo(0, row * cellHeight);
+            path.lineTo(cols * cellWidth, row * cellHeight);
+        }
+        // dividers
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Cell& cell = *this->cell(row, col);
+                QPointF topLeft = cell.topLeft();
+                switch (cell.state) {
+                case Cell::Square:
+                    break;
+                case Cell::BendDexter:
+                    path.moveTo(topLeft);
+                    path.lineTo(topLeft + QPointF(cellWidth, cellHeight));
+                    break;
+                case Cell::BendSinister:
+                    path.moveTo(topLeft + QPointF(0, cellHeight));
+                    path.lineTo(topLeft + QPointF(cellWidth, 0));
+                    break;
+                }
             }
         }
+        painter->setPen(QPen(Qt::black, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter->drawPath(path);
     }
 
     // Dual
-    painter->setPen(QPen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    for (int row = 0; row < rows; row++) {
-        for (int col = 0; col < cols; col++) {
-            Cell& cell = *this->cell(row, col);
-            if (cell.centerCount() > 1) {
-                // could just as well use Left and Right
-                QLineF line(cell.center(cell.Up), cell.center(cell.Down));
-                painter->drawLine(line);
+    {
+        QPainterPath path;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Cell& cell = *this->cell(row, col);
+                if (cell.centerCount() > 1) {
+                    // could just as well use Left and Right
+                    path.moveTo(cell.center(cell.Up));
+                    path.lineTo(cell.center(cell.Down));
+                }
+                if (row+1 < rows) {
+                    path.moveTo(cell.center(cell.Down));
+                    path.lineTo(this->cell(row+1, col)->center(cell.Up));
+                }
+                if (col+1 < cols) {
+                    path.moveTo(cell.center(cell.Right));
+                    path.lineTo(this->cell(row, col+1)->center(cell.Left));
+                }
             }
-            if (row+1 < rows) {
-                painter->drawLine(QLineF(cell.center(cell.Down), this->cell(row+1, col)->center(cell.Up)));
-            }
-            if (col+1 < cols) {
-                painter->drawLine(QLineF(cell.center(cell.Right), this->cell(row, col+1)->center(cell.Left)));
-            }
+            painter->setPen(QPen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter->drawPath(path);
         }
     }
 }
