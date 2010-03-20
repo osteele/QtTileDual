@@ -1,7 +1,8 @@
 HEADERS += board.h \
     cell.h \
     tilingwidget.h \
-    osutils.h
+    osutils.h \
+    tilingstrategy.h
 SOURCES += main.cpp \
     cell.cpp \
     board.cpp \

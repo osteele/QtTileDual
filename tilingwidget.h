@@ -3,7 +3,7 @@
 
 #include <QtGui/QGraphicsView>
 
-#include "board.h"
+class Board;
 
 class TilingWidget : public QGraphicsView
 {
@@ -11,6 +11,7 @@ class TilingWidget : public QGraphicsView
 
 public:
     TilingWidget();
+    void applyBoardFunction(int n);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -19,14 +20,9 @@ protected:
 
     void scaleView(qreal scaleFactor);
 
-public slots:
-    void setLayout0() {board.setCellStates(0);}
-    void setLayout1() {board.setCellStates(1);}
-    void setLayout2() {board.setCellStates(2);}
-
 private:
-    int timerId;
     Board& board;
+    int timerId;
 };
 
 #endif

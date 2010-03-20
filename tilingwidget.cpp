@@ -2,9 +2,11 @@
 #include <QDebug>
 #include <QGraphicsScene>
 #include <QtGui>
+#include <QSignalMapper>
 
-#include "tilingwidget.h"
 #include "board.h"
+#include "tilingwidget.h"
+#include "tilingstrategy.h"
 
 TilingWidget::TilingWidget()
     : timerId(0), board(*new Board(10,10))
@@ -32,19 +34,25 @@ TilingWidget::TilingWidget()
 
     QHBoxLayout *layout = new QHBoxLayout;
     QPushButton *b1 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    connect(b1, SIGNAL(clicked()), this, SLOT(setLayout0()));
+    TilingStrategy* d = new TilingStrategy(*this, 0);
+    connect(b1, SIGNAL(clicked()), d, SLOT(setLayout()));
     layout->addWidget(b1);
     QPushButton *b2 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    connect(b2, SIGNAL(clicked()), this, SLOT(setLayout1()));
+    connect(b2, SIGNAL(clicked()), new TilingStrategy(*this, 1), SLOT(setLayout()));
     layout->addWidget(b2);
     QPushButton *b3 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    connect(b3, SIGNAL(clicked()), this, SLOT(setLayout2()));
+    connect(b3, SIGNAL(clicked()), new TilingStrategy(*this, 2), SLOT(setLayout()));
     layout->addWidget(b3);
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addLayout(layout, 1, 0, Qt::AlignBottom);
     this->setLayout(mainLayout);
 
     timerId = startTimer(500);
+}
+
+void TilingWidget::applyBoardFunction(int n) {
+    board.setCellStates(n);
+    update();
 }
 
 void TilingWidget::keyPressEvent(QKeyEvent *event)

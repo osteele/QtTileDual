@@ -3,6 +3,7 @@ label the buttons, and add more strategies
 add stop, start animation checkbox
 
 * Polish
+alternately blur the grid, or the dual
 layout the grid along with the buttons
 shade the dual cells
 shade grid cells on mouseover
@@ -21,7 +22,7 @@ color schemes
 projections
 
 * Literacy
-can SLOT take a parameter?
+use FP to specify board strategies
 clean up the subpoly mess
 should this use a QtCanvas instead of a scene graph?
 add some design notes
