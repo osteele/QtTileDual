@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QSignalMapper>
 
-#include "board.h"
+#include "boardview.h"
 #include "tilingwidget.h"
 #include "tilingstrategy.h"
 

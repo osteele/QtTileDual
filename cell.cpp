@@ -4,7 +4,7 @@
 #include <QStyleOption>
 
 #include "cell.h"
-#include "board.h"
+#include "boardmodel.h"
 
 Cell::Cell(const BoardModel& board, int row, int col)
     : state(Square), board(board), row(row), col(col)

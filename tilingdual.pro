@@ -1,11 +1,13 @@
-HEADERS += board.h \
+HEADERS += boardmodel.h \
+    boardview.h \
     cell.h \
     tilingwidget.h \
     osutils.h \
     tilingstrategy.h
 SOURCES += main.cpp \
     cell.cpp \
-    board.cpp \
+    boardmodel.cpp \
+    boardview.cpp \
     tilingwidget.cpp \
     tilingstrategy.cpp
 TARGET.EPOCHEAPSIZE = 0x200000 \

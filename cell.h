@@ -2,7 +2,7 @@
 #define CELL_H
 
 #include <QGraphicsItem>
-#include <QList>
+#include <QCursor>
 
 class BoardModel;
 

@@ -1,35 +1,9 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef BOARDVIEW_H
+#define BOARDVIEW_H
 
 #include <QGraphicsItem>
 
-class Cell;
-
-/*! An instance of this class represents a partition of a rectangular subset of the plane into polygons, where each polygon
-  * is either a rectangle within a grid, or one of two right triangles that comprises such a rectangle. These polygons are
-  * accessible via the cell() method.
-  */
-class BoardModel : public QGraphicsItemGroup
-{
-public:
-    static const QColor GridColor;
-    static const QColor DualColor;
-
-    const int rows;
-    const int cols;
-    int cellWidth;
-    int cellHeight;
-
-    BoardModel(int rows, int cols, int cellWidth, int cellHeight);
-    //! Retrieves the cell at row, col. The row or column may be outside the board, in which case this method
-    //! returns null.
-    Cell* cell(int row, int col) const;
-    /// Initialize the cell states to an interesting configuration.
-    void setCellStates(int strategy=0);
-
-private:
-    QList<Cell*> cellList;
-};
+#include "boardmodel.h"
 
 /*! Renders the graph and the dual graph of a board model.
   */
@@ -108,4 +82,4 @@ protected:
     class QGraphicsBlurEffect* effect;
 };
 
-#endif // BOARD_H
+#endif // BOARDVIEW_H
