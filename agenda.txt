@@ -1,5 +1,4 @@
 * Basics
-label the buttons, and add more strategies
 add stop, start animation checkbox
 
 * Polish

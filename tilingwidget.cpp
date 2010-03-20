@@ -33,16 +33,13 @@ TilingWidget::TilingWidget()
     board.setCellStates();
 
     QHBoxLayout *layout = new QHBoxLayout;
-    QPushButton *b1 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    TilingStrategy* d = new TilingStrategy(*this, 0);
-    connect(b1, SIGNAL(clicked()), d, SLOT(setLayout()));
-    layout->addWidget(b1);
-    QPushButton *b2 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    connect(b2, SIGNAL(clicked()), new TilingStrategy(*this, 1), SLOT(setLayout()));
-    layout->addWidget(b2);
-    QPushButton *b3 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    connect(b3, SIGNAL(clicked()), new TilingStrategy(*this, 2), SLOT(setLayout()));
-    layout->addWidget(b3);
+    foreach (TilingStrategy *strategy, TilingStrategy::Strategies) {
+        strategy->setWidget(this);
+        QPushButton *button = new QPushButton(strategy->name, this);
+        connect(button, SIGNAL(clicked()), strategy, SLOT(apply()));
+        layout->addWidget(button);
+    }
+
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addLayout(layout, 1, 0, Qt::AlignBottom);
     this->setLayout(mainLayout);

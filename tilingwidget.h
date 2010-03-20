@@ -21,8 +21,8 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-    Board& board;
     int timerId;
+    Board& board;
 };
 
 #endif

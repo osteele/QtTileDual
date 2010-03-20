@@ -6,7 +6,8 @@ HEADERS += board.h \
 SOURCES += main.cpp \
     cell.cpp \
     board.cpp \
-    tilingwidget.cpp
+    tilingwidget.cpp \
+    tilingstrategy.cpp
 TARGET.EPOCHEAPSIZE = 0x200000 \
     0xA00000
 
