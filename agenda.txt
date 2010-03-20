@@ -1,6 +1,5 @@
 * Polish
-lay out the grid along with the buttons 
-stop animating when the user clicks on a cell
+stop animating when the user clicks on a cell?
 shade the dual cells
 shade grid cells on mouseover
 smooth animation between cell types
@@ -12,15 +11,15 @@ list of functions
 animate between functions
 color schemes
 sliders to set the grid width and height
-rojections
+projections
 
 * Design
+use slots or notifications to tell views when model changes
+split Cell into model and view 
 use Qt model / view classes?
-split Cell into model and view
-widget should use observer pattern to update when board changes
-clean up the subpoly mess
-should this use a QtCanvas instead of a scene graph?
+clean up the subpoly organization
+use QtCanvas instead of a scene graph?
 
 * Coding
-Cell -> Tile
+Cell -> Tile ?
 Board -> Graph

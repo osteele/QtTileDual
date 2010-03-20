@@ -30,4 +30,12 @@ private:
     BoardView* boardView;
 };
 
+class MainWidget : public QGraphicsView
+{
+    Q_OBJECT
+
+public:
+    MainWidget();
+};
+
 #endif

@@ -8,6 +8,56 @@
 #include "tilingwidget.h"
 #include "tilingstrategy.h"
 
+MainWidget::MainWidget()
+{
+    TilingWidget* tilingWidget = new TilingWidget;
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    // add the focus radio button group
+    {
+        QRadioButton *focusGrid = new QRadioButton(tr("Grid"));
+        connect(focusGrid, SIGNAL(toggled(bool)), tilingWidget , SLOT(onFocusGrid(bool)));
+        QRadioButton *focusDual = new QRadioButton(tr("Dual"));
+        connect(focusDual, SIGNAL(toggled(bool)), tilingWidget , SLOT(onFocusDual(bool)));
+        focusDual->setChecked(true);
+        QButtonGroup *bg = new QButtonGroup;
+        bg->addButton(focusGrid);
+        bg->addButton(focusDual);
+        QVBoxLayout *layo = new QVBoxLayout;
+        layo->addWidget(focusGrid);
+        layo->addWidget(focusDual);
+        QGroupBox *groupBox = new QGroupBox(tr("Focus"));
+        groupBox->setLayout(layo);
+        layout->addWidget(groupBox);
+    }
+
+    QCheckBox *animateButton = new QCheckBox(tr("Animate"));
+    connect(animateButton, SIGNAL(toggled(bool)), tilingWidget , SLOT(setAnimationState(bool)));
+    animateButton->setChecked(true);
+    layout->addWidget(animateButton);
+
+    // add the tiling strategies
+    {
+        QHBoxLayout *layo = new QHBoxLayout;
+        foreach (TilingStrategy *strategy, TilingStrategy::Strategies) {
+            strategy->setWidget(tilingWidget );
+            QPushButton *button = new QPushButton(strategy->name, this);
+            connect(button, SIGNAL(clicked()), strategy, SLOT(apply()));
+            layo->addWidget(button);
+        }
+        QGroupBox *groupBox = new QGroupBox(tr("Patterns"));
+        groupBox->setLayout(layo);
+        layout->addWidget(groupBox);
+    }
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(tilingWidget);
+    mainLayout->addLayout(layout);
+
+    setWindowTitle(tr("Tile"));
+    setLayout(mainLayout);
+}
+
 TilingWidget::TilingWidget()
     : timerId(0), boardView(new BoardView(10,10))
 {
@@ -28,49 +78,6 @@ TilingWidget::TilingWidget()
 
     //scale(qreal(0.8), qreal(0.8));
     setMinimumSize(600, 650);
-    setWindowTitle(tr("Tile"));
-
-    QHBoxLayout *layout = new QHBoxLayout;
-    // add the focus radio button group
-    {
-        QRadioButton *focusGrid = new QRadioButton(tr("Grid"));
-        connect(focusGrid, SIGNAL(toggled(bool)), this, SLOT(onFocusGrid(bool)));
-        QRadioButton *focusDual = new QRadioButton(tr("Dual"));
-        connect(focusDual, SIGNAL(toggled(bool)), this, SLOT(onFocusDual(bool)));
-        focusDual->setChecked(true);
-        QButtonGroup *bg = new QButtonGroup;
-        bg->addButton(focusGrid);
-        bg->addButton(focusDual);
-        QVBoxLayout *layo = new QVBoxLayout;
-        layo->addWidget(focusGrid);
-        layo->addWidget(focusDual);
-        QGroupBox *groupBox = new QGroupBox(tr("Focus"));
-        groupBox->setLayout(layo);
-        layout->addWidget(groupBox);
-    }
-
-    QCheckBox *animateButton = new QCheckBox(tr("Animate"));
-    connect(animateButton, SIGNAL(toggled(bool)), this, SLOT(setAnimationState(bool)));
-    animateButton->setChecked(true);
-    layout->addWidget(animateButton);
-
-    // add the tiling strategies
-    {
-        QHBoxLayout *layo = new QHBoxLayout;
-        foreach (TilingStrategy *strategy, TilingStrategy::Strategies) {
-            strategy->setWidget(this);
-            QPushButton *button = new QPushButton(strategy->name, this);
-            connect(button, SIGNAL(clicked()), strategy, SLOT(apply()));
-            layo->addWidget(button);
-        }
-        QGroupBox *groupBox = new QGroupBox(tr("Patterns"));
-        groupBox->setLayout(layo);
-        layout->addWidget(groupBox);
-    }
-
-    QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->addLayout(layout, 1, 0, Qt::AlignBottom);
-    this->setLayout(mainLayout);
 }
 
 void TilingWidget::onFocusGrid(bool)
