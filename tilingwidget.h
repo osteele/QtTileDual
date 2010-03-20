@@ -13,6 +13,10 @@ public:
     TilingWidget();
     void applyBoardFunction(int n);
 
+public slots:
+    void onFocusGrid(bool);
+    void onFocusDual(bool);
+
 protected:
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);

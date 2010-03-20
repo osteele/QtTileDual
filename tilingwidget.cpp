@@ -33,6 +33,21 @@ TilingWidget::TilingWidget()
     board.setCellStates();
 
     QHBoxLayout *layout = new QHBoxLayout;
+    {
+        QRadioButton *focusGrid = new QRadioButton("Grid");
+        connect(focusGrid, SIGNAL(toggled(bool)), this, SLOT(onFocusGrid(bool)));
+        QRadioButton *focusDual = new QRadioButton("Dual");
+        connect(focusDual, SIGNAL(toggled(bool)), this, SLOT(onFocusDual(bool)));
+        focusDual->setChecked(true);
+        QButtonGroup *bg = new QButtonGroup;
+        bg->addButton(focusGrid);
+        bg->addButton(focusDual);
+        QVBoxLayout *layo = new QVBoxLayout;
+        layo->addWidget(focusGrid);
+        layo->addWidget(focusDual);
+        layout->addLayout(layo);
+    }
+
     foreach (TilingStrategy *strategy, TilingStrategy::Strategies) {
         strategy->setWidget(this);
         QPushButton *button = new QPushButton(strategy->name, this);
@@ -45,6 +60,16 @@ TilingWidget::TilingWidget()
     this->setLayout(mainLayout);
 
     timerId = startTimer(500);
+}
+
+void TilingWidget::onFocusGrid(bool)
+{
+    board.setDualFocus(0);
+}
+
+void TilingWidget::onFocusDual(bool)
+{
+    board.setDualFocus(1);
 }
 
 void TilingWidget::applyBoardFunction(int n) {

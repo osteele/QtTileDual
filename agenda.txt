@@ -2,7 +2,6 @@
 add stop, start animation checkbox
 
 * Polish
-alternately blur the grid, or the dual
 layout the grid along with the buttons
 shade the dual cells
 shade grid cells on mouseover
@@ -21,6 +20,8 @@ color schemes
 projections
 
 * Literacy
+separate Board model from view
+widget should use observer pattern to update when board changes
 use FP to specify board strategies
 clean up the subpoly mess
 should this use a QtCanvas instead of a scene graph?
