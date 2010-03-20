@@ -115,8 +115,6 @@ void TilingWidget::timerEvent(QTimerEvent *event)
 // Mostly copied from the elasticnodes example.
 void TilingWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    Q_UNUSED(rect);
-
     // Shadow
     QRectF sceneRect = this->sceneRect();
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());

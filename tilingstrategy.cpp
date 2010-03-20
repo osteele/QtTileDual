@@ -18,7 +18,7 @@ const QList<TilingStrategy*> TilingStrategy::createStrategies()
 
 int TilingStrategy::evaluateAt(int row, int col) const
 {
-    QScriptEngine engine;
+    static QScriptEngine engine;
     QScriptValue rowValue(&engine, row);
     QScriptValue colValue(&engine, col);
     engine.globalObject().setProperty("i", rowValue);
