@@ -24,6 +24,13 @@ BoardView::BoardView(int rows, int cols)
 {
     addToGroup(boardGraphView);
     addToGroup(boardDualView);
+#if 0
+    for (int i = 0; i < model->rows; i++) {
+        for (int j = 0; j < model->rows; j++) {
+            addToGroup(model->cell(i, j));
+        }
+    }
+#endif
     model->setCellStates();
     setDualFocus(1);
 }
@@ -37,8 +44,7 @@ void BoardView::setDualFocus(qreal s)
 void BoardView::setCellStates(int strategy)
 {
     model->setCellStates(strategy);
-    boardGraphView->update();
-    boardDualView->update();
+    update();
 }
 
 void BoardView::updateCellStates()
@@ -46,12 +52,13 @@ void BoardView::updateCellStates()
     Cell& cell = *model->cell(qrand() % rows, qrand() % cols);
     cell.setState((cell.state + 1) % Cell::StateCount);
     update(); // TODO perf update cell and neighbors
-    boardGraphView->update();
-    boardDualView->update();
 }
 
-void BoardView::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
+void BoardView::update(const QRectF& rect)
 {
+    boardGraphView->update();
+    boardDualView->update();
+    QGraphicsItemGroup::update(rect);
 }
 
 void BoardView::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -59,11 +66,13 @@ void BoardView::mousePressEvent(QGraphicsSceneMouseEvent *event)
     int col = event->pos().x() / cellWidth;
     int row = event->pos().y() / cellHeight;
     Cell* cell = this->cell(row, col);
+    qDebug() << "press " << col << ", " << row;
     if (cell && cell != this->lastCell) {
+        qDebug() << "update";
         cell->setState((cell->state + 1) % Cell::StateCount);
-        update(); // TODO perf update cell and neighbors
+        update();
     }
-    this->lastCell = 0;
+    this->lastCell = cell;
     QGraphicsItem::mousePressEvent(event);
 }
 

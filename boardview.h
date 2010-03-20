@@ -32,7 +32,7 @@ public:
 
     // QGraphicsItem API
     QRectF boundingRect() const { return QRectF(0, 0, model->cols * model->cellWidth, model->rows * model->cellHeight); }
-    void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+    void update(const QRectF& rect = QRectF());
 
 protected:
     // QGraphicsItem API

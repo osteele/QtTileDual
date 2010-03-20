@@ -46,6 +46,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QCursor cursor() const { return Qt::PointingHandCursor; }
     
+protected:
+    // QGraphicsItem API
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
 private:
     const BoardModel& board;
     int row;

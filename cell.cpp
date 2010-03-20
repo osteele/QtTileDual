@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -90,7 +91,27 @@ QRectF Cell::boundingRect() const
 // TODO draw the lines between nodes here?
 void Cell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
-    Q_UNUSED(painter);
     Q_UNUSED(option);
-    painter->drawRect(boundingRect());
+    //exit(0);
+    //painter->setPen(QPen(Qt::red, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    //painter->setBrush(QBrush(Qt::red, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->fillRect(boundingRect(), Qt::red);
 }
+
+void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "down";
+}
+
+// FIXME this is never called. Figure out the magic.
+void Cell::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "move";
+}
+
+void Cell::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "up";
+}
+
+
