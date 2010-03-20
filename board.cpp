@@ -30,12 +30,17 @@ Cell* Board::cell(int row, int col)
         return 0;
 }
 
-void Board::setCellStates()
+void Board::setCellStates(int strategy)
 {
-    for (int row = 0; row < rows; row++) {
-        for (int col = 0; col < cols; col++) {
-            int state = (row + col) % Cell::StateCount;
-            cell(row, col)->setState(state);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int state = 0;
+            switch (strategy) {
+            case 0: state = 0; break;
+            case 1: state = 1; break;
+            case 2: state = i^j; break;
+            }
+            cell(i, j)->setState(state % Cell::StateCount);
         }
     }
 }

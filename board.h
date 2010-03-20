@@ -24,7 +24,7 @@ public:
     //! returns null.
     Cell* cell(int row, int col);
     /// Initialize the cell states to an interesting configuration.
-    void setCellStates();
+    void setCellStates(int strategy=0);
     /// Update the board state.  This is used during animation.
     void updateCellStates();
 

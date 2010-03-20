@@ -1,5 +1,6 @@
 * Basics
-buttons to set the grid functions
+lay out the buttons
+add stop, start animation checkbox
 
 * Polish
 shade the dual cells
@@ -19,8 +20,7 @@ color schemes
 projections
 
 * Literacy
-design docs
+can SLOT take a parameter?
 clean up the subpoly mess
-
-* Issues
 should this use a QtCanvas instead of a scene graph?
+add some design notes
