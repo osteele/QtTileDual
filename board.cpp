@@ -7,32 +7,22 @@
 #include "board.h"
 #include "cell.h"
 
-const QColor Board::GridColor = Qt::darkGray;
-const QColor Board::DualColor = ColorUtils::alpha(Qt::blue, 0.75);
+/*
+ * Model
+ */
 
-Board::Board(int rows, int cols)
+BoardModel::BoardModel(int rows, int cols, int cellWidth, int cellHeight)
     : rows(rows), cols(cols),
-      cellWidth(50), cellHeight(50),
-      boardGraphView(new BoardGraphView(*this)),
-      boardDualView(new BoardDualView(*this)),
-      lastCell(0)
+      cellWidth(cellWidth), cellHeight(cellHeight)
 {
     for (int row = 0; row < rows; row++) {
         for (int col = 0; col < cols; col++) {
             cellList << new Cell(*this, row, col);
         }
     }
-    addToGroup(boardGraphView);
-    addToGroup(boardDualView);
-    setDualFocus(1);
 }
 
-void Board::setDualFocus(qreal s)
-{
-    boardGraphView->effect->setBlurRadius(1 + 5 * s);
-    boardDualView->effect->setBlurRadius(1 + (1 - s) * 5);
-}
-Cell* Board::cell(int row, int col) const
+Cell* BoardModel::cell(int row, int col) const
 {
     if (0 <= row && row < rows &&
         0 <= col && col < cols) {
@@ -41,7 +31,7 @@ Cell* Board::cell(int row, int col) const
         return 0;
 }
 
-void Board::setCellStates(int strategy)
+void BoardModel::setCellStates(int strategy)
 {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -54,24 +44,57 @@ void Board::setCellStates(int strategy)
             cell(i, j)->setState(state % Cell::StateCount);
         }
     }
+}
+
+
+/*
+ * View
+ */
+
+const QColor BoardView::GridColor = Qt::darkGray;
+const QColor BoardView::DualColor = ColorUtils::alpha(Qt::blue, 0.75);
+
+BoardView::BoardView(int rows, int cols)
+    : rows(rows), cols(cols),
+      cellWidth(50), cellHeight(50),
+      model(new BoardModel(rows, cols, cellWidth, cellHeight)),
+      boardGraphView(new BoardGraphView(model)),
+      boardDualView(new BoardDualView(model)),
+      lastCell(0)
+{
+    addToGroup(boardGraphView);
+    addToGroup(boardDualView);
+    model->setCellStates();
+    setDualFocus(1);
+}
+
+void BoardView::setDualFocus(qreal s)
+{
+    boardGraphView->effect->setBlurRadius(1 + 5 * s);
+    boardDualView->effect->setBlurRadius(1 + (1 - s) * 5);
+}
+
+void BoardView::setCellStates(int strategy)
+{
+    model->setCellStates(strategy);
     boardGraphView->update();
     boardDualView->update();
 }
 
-void Board::updateCellStates()
+void BoardView::updateCellStates()
 {
-    Cell& cell = *this->cell(qrand() % rows, qrand() % cols);
+    Cell& cell = *model->cell(qrand() % rows, qrand() % cols);
     cell.setState((cell.state + 1) % Cell::StateCount);
     update(); // TODO perf update cell and neighbors
     boardGraphView->update();
     boardDualView->update();
 }
 
-void Board::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
+void BoardView::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
 {
 }
 
-void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void BoardView::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     int col = event->pos().x() / cellWidth;
     int row = event->pos().y() / cellHeight;
@@ -85,14 +108,14 @@ void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
 }
 
 // FIXME this is never called. Figure out the magic.
-void Board::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void BoardView::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "move";
     mousePressEvent(event);
     QGraphicsItem::mouseMoveEvent(event);
 }
 
-void Board::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void BoardView::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "up";
     this->lastCell = 0;
@@ -100,20 +123,20 @@ void Board::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 /*
- * The Grid view
+ * Grid view
  */
 
-BoardGraphView::BoardGraphView(const Board& board) : board(board), effect(new QGraphicsBlurEffect)
+BoardGraphView::BoardGraphView(const BoardModel* model) : model(model), effect(new QGraphicsBlurEffect)
 {
     setGraphicsEffect(effect);
 }
 
 void BoardGraphView::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    int cols = board.cols;
-    int rows = board.rows;
-    int cellWidth = board.cellWidth;
-    int cellHeight = board.cellHeight;
+    int cols = model->cols;
+    int rows = model->rows;
+    int cellWidth = model->cellWidth;
+    int cellHeight = model->cellHeight;
 
     QPainterPath path;
     // vertical lines
@@ -129,7 +152,7 @@ void BoardGraphView::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
     // dividers
     for (int row = 0; row < rows; row++) {
         for (int col = 0; col < cols; col++) {
-            const Cell& cell = *board.cell(row, col);
+            const Cell& cell = *model->cell(row, col);
             QPointF topLeft = cell.topLeft();
             switch (cell.state) {
             case Cell::Square:
@@ -145,28 +168,28 @@ void BoardGraphView::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
             }
         }
     }
-    painter->setPen(QPen(Board::GridColor, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(BoardView::GridColor, 1.4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawPath(path);
 }
 
 /*
- * The Dual view
+ * Dual view
  */
 
-BoardDualView::BoardDualView(const Board& board) : board(board), effect(new QGraphicsBlurEffect)
+BoardDualView::BoardDualView(const BoardModel* model) : model(model), effect(new QGraphicsBlurEffect)
 {
     setGraphicsEffect(effect);
 }
 
 void BoardDualView::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    int cols = board.cols;
-    int rows = board.rows;
+    int cols = model->cols;
+    int rows = model->rows;
 
     QPainterPath path;
     for (int row = 0; row < rows; row++) {
         for (int col = 0; col < cols; col++) {
-            Cell& cell = *board.cell(row, col);
+            Cell& cell = *model->cell(row, col);
             if (cell.isDivided()) {
                 // could just as well use Left and Right
                 path.moveTo(cell.center(cell.Up));
@@ -174,14 +197,14 @@ void BoardDualView::paint(QPainter *painter, const QStyleOptionGraphicsItem *, Q
             }
             if (row+1 < rows) {
                 path.moveTo(cell.center(cell.Down));
-                path.lineTo(board.cell(row+1, col)->center(cell.Up));
+                path.lineTo(model->cell(row+1, col)->center(cell.Up));
             }
             if (col+1 < cols) {
                 path.moveTo(cell.center(cell.Right));
-                path.lineTo(board.cell(row, col+1)->center(cell.Left));
+                path.lineTo(model->cell(row, col+1)->center(cell.Left));
             }
         }
     }
-    painter->setPen(QPen(Board::DualColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(BoardView::DualColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawPath(path);
 }

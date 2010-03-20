@@ -4,7 +4,7 @@
 #include <QGraphicsItem>
 #include <QList>
 
-class Board;
+class BoardModel;
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
@@ -25,7 +25,7 @@ public:
 
     CellState state;
 
-    Cell(Board&, int row, int col);
+    Cell(const BoardModel&, int row, int col);
 
     // topology
     void setState(CellState state) { this->state = state; }
@@ -47,7 +47,7 @@ public:
     QCursor cursor() const { return Qt::PointingHandCursor; }
     
 private:
-    Board& board;
+    const BoardModel& board;
     int row;
     int col;
 

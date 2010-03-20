@@ -8,10 +8,8 @@ class Cell;
 /*! An instance of this class represents a partition of a rectangular subset of the plane into polygons, where each polygon
   * is either a rectangle within a grid, or one of two right triangles that comprises such a rectangle. These polygons are
   * accessible via the cell() method.
-  *
-  * This class handles both the model (it specifies the polygons), and the view (it knows how to draw them).
   */
-class Board : public QGraphicsItemGroup
+class BoardModel : public QGraphicsItemGroup
 {
 public:
     static const QColor GridColor;
@@ -22,10 +20,34 @@ public:
     int cellWidth;
     int cellHeight;
 
-    Board(int rows, int cols);
+    BoardModel(int rows, int cols, int cellWidth, int cellHeight);
     //! Retrieves the cell at row, col. The row or column may be outside the board, in which case this method
     //! returns null.
     Cell* cell(int row, int col) const;
+    /// Initialize the cell states to an interesting configuration.
+    void setCellStates(int strategy=0);
+
+private:
+    QList<Cell*> cellList;
+};
+
+/*! Renders the graph and the dual graph of a board model.
+  */
+class BoardView: public QGraphicsItemGroup
+{
+public:
+    static const QColor GridColor;
+    static const QColor DualColor;
+
+    const int rows;
+    const int cols;
+    int cellWidth;
+    int cellHeight;
+
+    BoardView(int rows, int cols);
+    //! Retrieves the cell at row, col. The row or column may be outside the board, in which case this method
+    //! returns null.
+    Cell* cell(int row, int col) const { return model->cell(row, col); }
     /// Initialize the cell states to an interesting configuration.
     void setCellStates(int strategy=0);
     /// Update the board state.  This is used during animation.
@@ -35,7 +57,7 @@ public:
     void setDualFocus(qreal);
 
     // QGraphicsItem API
-    QRectF boundingRect() const { return QRectF(0, 0, cols * cellWidth, cols * cellHeight); }
+    QRectF boundingRect() const { return QRectF(0, 0, model->cols * model->cellWidth, model->rows * model->cellHeight); }
     void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 
 protected:
@@ -45,7 +67,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 private:
-    QList<Cell*> cellList;
+    BoardModel *model;
     class BoardGraphView* boardGraphView;
     class BoardDualView* boardDualView;
     Cell* lastCell; //!< Dragging will use this
@@ -58,15 +80,15 @@ private:
 class BoardGraphView : public QGraphicsItem
 {
 public:
-    BoardGraphView(const Board& board);
+    BoardGraphView(const BoardModel* model);
 
     // QGraphicsItem API
-    QRectF boundingRect() const { return board.boundingRect(); }
+    QRectF boundingRect() const { return QRectF(0, 0, model->cols * model->cellWidth, model->rows * model->cellHeight); }
     void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 
 protected:
-    friend class Board;
-    const Board& board;
+    friend class BoardView;
+    const BoardModel* model;
     class QGraphicsBlurEffect* effect;
 };
 
@@ -74,15 +96,15 @@ protected:
 class BoardDualView : public QGraphicsItem
 {
 public:
-    BoardDualView(const Board& board);
+    BoardDualView(const BoardModel* model);
 
     // QGraphicsItem API
-    QRectF boundingRect() const { return board.boundingRect(); }
+    QRectF boundingRect() const { return QRectF(0, 0, model->cols * model->cellWidth, model->rows * model->cellHeight); }
     void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 
 protected:
-    friend class Board;
-    const Board& board;
+    friend class BoardView;
+    const BoardModel* model;
     class QGraphicsBlurEffect* effect;
 };
 

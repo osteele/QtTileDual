@@ -6,7 +6,7 @@
 #include "cell.h"
 #include "board.h"
 
-Cell::Cell(Board& board, int row, int col)
+Cell::Cell(const BoardModel& board, int row, int col)
     : state(Square), board(board), row(row), col(col)
 {
     setFlag(ItemIsMovable);

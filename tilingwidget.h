@@ -3,7 +3,7 @@
 
 #include <QtGui/QGraphicsView>
 
-class Board;
+class BoardView;
 
 class TilingWidget : public QGraphicsView
 {
@@ -26,7 +26,7 @@ protected:
 
 private:
     int timerId;
-    Board& board;
+    BoardView* boardView;
 };
 
 #endif

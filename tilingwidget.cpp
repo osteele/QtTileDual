@@ -9,14 +9,14 @@
 #include "tilingstrategy.h"
 
 TilingWidget::TilingWidget()
-    : timerId(0), board(*new Board(10,10))
+    : timerId(0), boardView(new BoardView(10,10))
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     // TODO select this based on window size
     // TODO rescale board when window changes
     scene->setSceneRect(-25, -30, 540, 550);
-    scene->addItem(&board);
+    scene->addItem(boardView);
     setScene(scene);
     // copied from elasticnodes
     // TODO figure out what these do, and which are necessary
@@ -29,8 +29,6 @@ TilingWidget::TilingWidget()
     //scale(qreal(0.8), qreal(0.8));
     setMinimumSize(600, 650);
     setWindowTitle(tr("Tile"));
-
-    board.setCellStates();
 
     QHBoxLayout *layout = new QHBoxLayout;
     {
@@ -64,16 +62,16 @@ TilingWidget::TilingWidget()
 
 void TilingWidget::onFocusGrid(bool)
 {
-    board.setDualFocus(0);
+    boardView->setDualFocus(0);
 }
 
 void TilingWidget::onFocusDual(bool)
 {
-    board.setDualFocus(1);
+    boardView->setDualFocus(1);
 }
 
 void TilingWidget::applyBoardFunction(int n) {
-    board.setCellStates(n);
+    boardView->setCellStates(n);
     update();
 }
 
@@ -88,7 +86,7 @@ void TilingWidget::keyPressEvent(QKeyEvent *event)
 void TilingWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
-    board.updateCellStates();
+    boardView->updateCellStates();
 }
 
 // Mostly copied from the elasticnodes example.

@@ -20,7 +20,8 @@ color schemes
 projections
 
 * Literacy
-separate Board model from view
+use Qt model / view classes?
+split Cell into model and view
 widget should use observer pattern to update when board changes
 use FP to specify board strategies
 clean up the subpoly mess
