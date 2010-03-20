@@ -19,10 +19,7 @@ color schemes
 projections
 
 * Literacy
-README; include coding conventions ({, ref types, inlines, perf; MV; fname case)
-API docs
 design docs
-check Qt API doc conventions
 clean up the subpoly mess
 
 * Issues

@@ -62,10 +62,6 @@ static const SubPoly& findPoly(Cell::CellState state, Cell::Direction dir)
     return first.touches(dir) ? first : second;
 }
 
-// Return the center of the polygon that touches the dir border of the cell.
-// If the cell is a square, this is the center of the square. Otherwise it's
-// the center of one of the two triangles that subdivide the square, where the
-// triangles depend on the cell state, and which one depends on dir.
 QPointF Cell::center(Direction dir) const
 {
     // Center of the square cell. This is adjusted based on the cell type and direction.

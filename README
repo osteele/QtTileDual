@@ -1,0 +1,63 @@
+Overview
+========
+This is a quick applet that I'm writing in order to learn Qt with.
+It's not yet idiomatic Qt. Be gentle.
+
+The application draws a partition of (a portion of) the plane into
+polygons. The subdivision is based on a grid, but some cells are
+subdivided by a diagonal line. It also draws the dual of the
+mesh. This is another partition, where the center of each polygon in
+the original partition is the vertex of a polygon in the dual. (The
+dual of the dual is the original partition.)
+
+Check back to see a version that adds some buttons
+
+
+Build Instructions
+==================
+Install Qt, and execute 'qmake' on the shell.
+
+I developed this on Mac OS and haven't yet tried to compile it in
+Linux.  Hence, there are likely to be case issues with the filenames;
+in particular, where the case inside an 'include' doesn't match the
+name in the file system.
+
+
+Implementation Notes
+====================
+See the TODO and FIXME items in the source code for a list of
+micro-level (local) issues and cleanup areas. See the file agenda.txt
+for my to do list, and a running list of larger-scale (global) issues.
+
+The code uses the Qt documentation conventions.
+
+Some notes on coding standards:
+
+- I prefer K&R bracket style in order to fit more into a vertical
+  page, but I've used the Qt style for class and method definitions,
+  for consistency with the Qt docs and framework. I don't know whether
+  I'll stick with this.
+
+- I've used reference types (&) to denote non-nullable references, and
+  pointers (*) to denote nullable references. This clashes with (most of)
+  the Qt API style, so maybe I'll change it. Similarly for the use of 'T*'
+  instead of Qt's 'T *'.
+
+- I've included inline definitions for short functions, as a quick way
+  to prototype, especially when the project is small and recompilation
+  time is slight.
+
+- More member fields are public than would be true for a public API.
+
+- There's no attempt to optimize this code for (space or time) performance,
+  since for a desktop app there's no need.
+
+- Some of the classes double as models and views. In a more mature, or
+  larger, project I would factor this into separate model and view
+  classes (maybe using the flyweight pattern for the latter).
+ 
+
+License
+=======
+Copyright 2010 by Oliver Steele. This code is available under the MIT
+License.`

@@ -47,11 +47,6 @@ void TilingWidget::timerEvent(QTimerEvent *event)
     board.updateCellStates();
 }
 
-void TilingWidget::wheelEvent(QWheelEvent *event)
-{
-    scaleView(pow((double)2, -event->delta() / 240.0));
-}
-
 // Mostly copied from the elasticnodes example.
 void TilingWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
@@ -89,6 +84,7 @@ void TilingWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect, message);
 }
 
+// Copied from the elasticnodes example.
 void TilingWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();

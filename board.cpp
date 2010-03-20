@@ -41,7 +41,6 @@ void Board::setCellStates()
 
 void Board::updateCellStates()
 {
-    return;
     Cell& cell = *this->cell(qrand() % rows, qrand() % cols);
     cell.setState((cell.state + 1) % Cell::StateCount);
     update(); // TODO perf update cell and neighbors
@@ -127,6 +126,7 @@ void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mousePressEvent(event);
 }
 
+// FIXME this is never called. Figure out the magic.
 void Board::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "move";
