@@ -1,29 +1,27 @@
-* Basics
-add stop, start animation checkbox
-
 * Polish
-layout the grid along with the buttons
+lay out the grid along with the buttons 
+stop animating when the user clicks on a cell
 shade the dual cells
 shade grid cells on mouseover
 smooth animation between cell types
 smooth animation of dual grid
 
-* UI controls
-set the grid width and height
-
 * Features
 drag to paint cells
 list of functions
-UI for selecting function
 animate between functions
 color schemes
-projections
+sliders to set the grid width and height
+rojections
 
-* Literacy
+* Design
 use Qt model / view classes?
 split Cell into model and view
 widget should use observer pattern to update when board changes
 use FP to specify board strategies
 clean up the subpoly mess
 should this use a QtCanvas instead of a scene graph?
-add some design notes
+
+* Coding
+Cell -> Tile
+Board -> Graph

@@ -9,7 +9,7 @@ const QList<TilingStrategy*> TilingStrategy::createStrategies()
 
     strategies << new TilingStrategy("Rectangular", 0);
     strategies << new TilingStrategy("Diagonal", 1);
-    strategies << new TilingStrategy("Oddball", 2);
+    strategies << new TilingStrategy("Mixed", 2);
 
     return strategies;
 }

@@ -31,10 +31,11 @@ TilingWidget::TilingWidget()
     setWindowTitle(tr("Tile"));
 
     QHBoxLayout *layout = new QHBoxLayout;
+    // add the focus radio button group
     {
-        QRadioButton *focusGrid = new QRadioButton("Grid");
+        QRadioButton *focusGrid = new QRadioButton(tr("Grid"));
         connect(focusGrid, SIGNAL(toggled(bool)), this, SLOT(onFocusGrid(bool)));
-        QRadioButton *focusDual = new QRadioButton("Dual");
+        QRadioButton *focusDual = new QRadioButton(tr("Dual"));
         connect(focusDual, SIGNAL(toggled(bool)), this, SLOT(onFocusDual(bool)));
         focusDual->setChecked(true);
         QButtonGroup *bg = new QButtonGroup;
@@ -43,21 +44,33 @@ TilingWidget::TilingWidget()
         QVBoxLayout *layo = new QVBoxLayout;
         layo->addWidget(focusGrid);
         layo->addWidget(focusDual);
-        layout->addLayout(layo);
+        QGroupBox *groupBox = new QGroupBox(tr("Focus"));
+        groupBox->setLayout(layo);
+        layout->addWidget(groupBox);
     }
 
-    foreach (TilingStrategy *strategy, TilingStrategy::Strategies) {
-        strategy->setWidget(this);
-        QPushButton *button = new QPushButton(strategy->name, this);
-        connect(button, SIGNAL(clicked()), strategy, SLOT(apply()));
-        layout->addWidget(button);
+    QCheckBox *animateButton = new QCheckBox(tr("Animate"));
+    connect(animateButton, SIGNAL(toggled(bool)), this, SLOT(setAnimationState(bool)));
+    animateButton->setChecked(true);
+    layout->addWidget(animateButton);
+
+    // add the tiling strategies
+    {
+        QHBoxLayout *layo = new QHBoxLayout;
+        foreach (TilingStrategy *strategy, TilingStrategy::Strategies) {
+            strategy->setWidget(this);
+            QPushButton *button = new QPushButton(strategy->name, this);
+            connect(button, SIGNAL(clicked()), strategy, SLOT(apply()));
+            layo->addWidget(button);
+        }
+        QGroupBox *groupBox = new QGroupBox(tr("Patterns"));
+        groupBox->setLayout(layo);
+        layout->addWidget(groupBox);
     }
 
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addLayout(layout, 1, 0, Qt::AlignBottom);
     this->setLayout(mainLayout);
-
-    timerId = startTimer(500);
 }
 
 void TilingWidget::onFocusGrid(bool)
@@ -68,6 +81,16 @@ void TilingWidget::onFocusGrid(bool)
 void TilingWidget::onFocusDual(bool)
 {
     boardView->setDualFocus(1);
+}
+
+void TilingWidget::setAnimationState(bool enable)
+{
+    if (enable) {
+        if (!timerId) timerId = startTimer(500);
+    } else if (timerId) {
+        killTimer(timerId);
+        timerId = 0;
+    }
 }
 
 void TilingWidget::applyBoardFunction(int n) {

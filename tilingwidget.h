@@ -16,6 +16,7 @@ public:
 public slots:
     void onFocusGrid(bool);
     void onFocusDual(bool);
+    void setAnimationState(bool);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
