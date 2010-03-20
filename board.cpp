@@ -2,11 +2,12 @@
 #include <QtGui/QGraphicsView>
 #include <QGraphicsSceneMouseEvent>
 
+#include "osutils.h"
 #include "board.h"
 #include "cell.h"
 
 QColor Board::GridColor = Qt::darkGray;
-QColor Board::DualColor = Qt::blue;
+QColor Board::DualColor = ColorUtils::alpha(Qt::blue, 0.75);
 
 Board::Board(int rows, int cols)
     : rows(rows), cols(cols),
@@ -109,7 +110,7 @@ void Board::paintDual(QPainter *painter)
             }
         }
     }
-    painter->setPen(QPen(DualColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(DualColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawPath(path);
 }
 
