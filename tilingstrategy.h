@@ -13,14 +13,18 @@ public:
     static const QList<TilingStrategy*> Strategies;
 
     const QString name;
-    TilingStrategy(QString name, int n) : name(name), widget(widget), n(n) {}
+    const QString expression;
+
+    TilingStrategy(QString name, QString expression) : name(name), expression(expression) {}
 
     // FIXME I don't like having to side-effect this after the instance is initialized. Would it be more idiomatic to use a QSignalMapper instead?
     void setWidget(TilingWidget* widget) { this->widget = widget; }
 
+    int evaluateAt(int row, int col) const;
+
 public slots:
     void apply() {
-        widget->applyBoardFunction(n);
+        widget->applyStrategy(*this);
     }
 
 private:

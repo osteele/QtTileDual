@@ -5,6 +5,7 @@
 #include "osutils.h"
 #include "board.h"
 #include "cell.h"
+#include "tilingstrategy.h"
 
 QColor Board::GridColor = Qt::darkGray;
 QColor Board::DualColor = ColorUtils::alpha(Qt::blue, 0.75);
@@ -41,6 +42,15 @@ void Board::setCellStates(int strategy)
             case 2: state = i^j; break;
             }
             cell(i, j)->setState(state % Cell::StateCount);
+        }
+    }
+}
+
+void Board::applyStrategy(const TilingStrategy& strategy)
+{
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cell(i, j)->setState(strategy.evaluateAt(i, j) % Cell::StateCount);
         }
     }
 }

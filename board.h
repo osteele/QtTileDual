@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 
 class Cell;
+class TilingStrategy;
 
 /*! An instance of this class represents a partition of a rectangular subset of the plane into polygons, where each polygon
   * is either a rectangle within a grid, or one of two right triangles that comprises such a rectangle. These polygons are
@@ -25,6 +26,7 @@ public:
     Cell* cell(int row, int col);
     /// Initialize the cell states to an interesting configuration.
     void setCellStates(int strategy=0);
+    void applyStrategy(const TilingStrategy&);
     /// Update the board state.  This is used during animation.
     void updateCellStates();
 

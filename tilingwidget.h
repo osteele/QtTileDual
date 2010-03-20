@@ -4,6 +4,7 @@
 #include <QtGui/QGraphicsView>
 
 class Board;
+class TilingStrategy;
 
 class TilingWidget : public QGraphicsView
 {
@@ -12,6 +13,7 @@ class TilingWidget : public QGraphicsView
 public:
     TilingWidget();
     void applyBoardFunction(int n);
+    void applyStrategy(const TilingStrategy&);
 
 protected:
     void keyPressEvent(QKeyEvent *event);

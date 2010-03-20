@@ -47,10 +47,18 @@ TilingWidget::TilingWidget()
     timerId = startTimer(500);
 }
 
-void TilingWidget::applyBoardFunction(int n) {
+void TilingWidget::applyBoardFunction(int n)
+{
     board.setCellStates(n);
     update();
 }
+
+void TilingWidget::applyStrategy(const TilingStrategy& strategy)
+{
+    board.applyStrategy(strategy);
+    update();
+}
+
 
 void TilingWidget::keyPressEvent(QKeyEvent *event)
 {
