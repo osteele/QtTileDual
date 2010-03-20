@@ -1,11 +1,17 @@
+#include <QDebug.h>
 #include <QtGui/QGraphicsView>
+#include <QGraphicsSceneMouseEvent>
 
 #include "board.h"
 #include "cell.h"
 
+QColor Board::GridColor = Qt::darkGray;
+QColor Board::DualColor = Qt::blue;
+
 Board::Board(int rows, int cols)
     : rows(rows), cols(cols),
-      cellWidth(50), cellHeight(50)
+      cellWidth(50), cellHeight(50),
+      lastCell(0)
 {
     for (int row = 0; row < rows; row++) {
         for (int col = 0; col < cols; col++) {
@@ -27,7 +33,7 @@ void Board::setCellStates()
 {
     for (int row = 0; row < rows; row++) {
         for (int col = 0; col < cols; col++) {
-            int state = (row + col) % 3;
+            int state = (row + col) % Cell::StateCount;
             cell(row, col)->setState(state);
         }
     }
@@ -35,9 +41,10 @@ void Board::setCellStates()
 
 void Board::updateCellStates()
 {
+    return;
     Cell& cell = *this->cell(qrand() % rows, qrand() % cols);
-    cell.setState((cell.state + 1) % 3);
-    update();
+    cell.setState((cell.state + 1) % Cell::StateCount);
+    update(); // TODO perf update cell and neighbors
 }
 
 void Board::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -45,9 +52,6 @@ void Board::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
     paintGrid(painter);
     paintDual(painter);
 }
-
-QColor Board::GridColor = Qt::darkGray;
-QColor Board::DualColor = Qt::blue;
 
 void Board::paintGrid(QPainter *painter)
 {
@@ -109,3 +113,31 @@ void Board::paintDual(QPainter *painter)
     painter->setPen(QPen(DualColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawPath(path);
 }
+
+void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    int col = event->pos().x() / cellWidth;
+    int row = event->pos().y() / cellHeight;
+    Cell* cell = this->cell(row, col);
+    if (cell && cell != this->lastCell) {
+        cell->setState((cell->state + 1) % Cell::StateCount);
+        update(); // TODO perf update cell and neighbors
+    }
+    this->lastCell = 0;
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void Board::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "move";
+    mousePressEvent(event);
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Board::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "up";
+    this->lastCell = 0;
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+

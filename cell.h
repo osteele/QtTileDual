@@ -15,6 +15,7 @@ class Cell : public QGraphicsItem
 public:
     // If and how the square is divided into polygons
     enum CellState { Square, BendSinister, BendDexter };
+    static const int StateCount = 3;
     // if you change this, change the statics in Cell::neighbor
     enum Direction { Up, Down, Left, Right };
 
@@ -36,11 +37,6 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QCursor cursor() const { return Qt::PointingHandCursor; }
-protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     
 private:
     Board& board;
@@ -50,5 +46,7 @@ private:
     static const int dxs[];
     static const int dys[];
 };
+
+//const int Cell::StateCount = 3;
 
 #endif

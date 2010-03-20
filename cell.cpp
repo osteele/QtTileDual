@@ -98,26 +98,3 @@ void Cell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(option);
     painter->drawRect(boundingRect());
 }
-
-QVariant Cell::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    switch (change) {
-    case ItemPositionHasChanged:
-        break;
-    default:
-        break;
-    };
-
-    return QGraphicsItem::itemChange(change, value);
-}
-
-void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    update();
-    exit(1);
-    QGraphicsItem::mousePressEvent(event);
-}
-
-void Cell::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-    update();
-    QGraphicsItem::mouseReleaseEvent(event);
-}

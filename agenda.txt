@@ -1,7 +1,5 @@
 * Basics
-click on cell to change type
-center the grid
-more grid types
+buttons to set the grid functions
 
 * Polish
 shade the dual cells
@@ -13,6 +11,7 @@ smooth animation of dual grid
 set the grid width and height
 
 * Features
+drag to paint cells
 list of functions
 UI for selecting function
 animate between functions
@@ -20,13 +19,11 @@ color schemes
 projections
 
 * Literacy
-README
+README; include coding conventions ({, ref types, inlines, perf; MV; fname case)
 API docs
 design docs
 check Qt API doc conventions
-& -> *, for consistency w/ Qt API
 clean up the subpoly mess
-remove '3' magic number
 
 * Issues
-should this use a scene graph (status quo), or QtCanvas?
+should this use a QtCanvas instead of a scene graph?

@@ -21,11 +21,18 @@ public:
     // QGraphicsItem API
     QRectF boundingRect() const { return QRectF(0, 0, cols * cellWidth, cols * cellHeight); }
     void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
 private:
     static QColor GridColor;
     static QColor DualColor;
 
-    QList<Cell *> cellList;
+    QList<Cell*> cellList;
+    Cell* lastCell;
 
     void paintGrid(QPainter*);
     void paintDual(QPainter*);

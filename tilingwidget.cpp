@@ -24,18 +24,6 @@ TilingWidget::TilingWidget()
     setTransformationAnchor(AnchorUnderMouse);
     setResizeAnchor(AnchorViewCenter);
 
-#if 0
-    // FIXME adding the board should do this (can a QGraphicsItem be or contain a recursive scene graph?)
-    for (int row = 0; row < board.rows; row++) {
-        for (int col = 0; col < board.cols; col++) {
-            Cell* a = board.cell(row, col);
-            Cell* aa = static_cast<QGraphicsItem*>(a);
-            QGraphicsItem* b = a;
-            scene->addItem(board.cell(row, col));
-        }
-    }
-#endif
-
     //scale(qreal(0.8), qreal(0.8));
     setMinimumSize(600, 600);
     setWindowTitle(tr("Tile"));
