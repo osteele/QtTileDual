@@ -22,8 +22,9 @@ public:
     //! Retrieves the cell at row, col. The row or column may be outside the board, in which case this method
     //! returns null.
     Cell* cell(int row, int col) const { return model->cell(row, col); }
-    /// Initialize the cell states to an interesting configuration.
-    void setCellStates(int strategy=0);
+
+    void setPattern(const TilingStrategy&);
+
     /// Update the board state.  This is used during animation.
     void updateCellStates();
 

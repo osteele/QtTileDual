@@ -93,10 +93,10 @@ void TilingWidget::setAnimationState(bool enable)
     }
 }
 
-void TilingWidget::applyBoardFunction(int n) {
-    boardView->setCellStates(n);
-    update();
+void TilingWidget::setPattern(const class TilingStrategy& strategy) {
+    boardView->setPattern(strategy);
 }
+
 
 void TilingWidget::keyPressEvent(QKeyEvent *event)
 {

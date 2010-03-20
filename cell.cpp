@@ -98,18 +98,17 @@ void Cell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->fillRect(boundingRect(), Qt::red);
 }
 
-void Cell::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Cell::mousePressEvent(QGraphicsSceneMouseEvent *)
 {
     qDebug() << "down";
 }
 
-// FIXME this is never called. Figure out the magic.
-void Cell::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void Cell::mouseMoveEvent(QGraphicsSceneMouseEvent *)
 {
     qDebug() << "move";
 }
 
-void Cell::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void Cell::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
 {
     qDebug() << "up";
 }

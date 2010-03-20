@@ -19,11 +19,12 @@ public:
     int cellHeight;
 
     BoardModel(int rows, int cols, int cellWidth, int cellHeight);
+
     //! Retrieves the cell at row, col. The row or column may be outside the board, in which case this method
     //! returns null.
     Cell* cell(int row, int col) const;
-    /// Initialize the cell states to an interesting configuration.
-    void setCellStates(int strategy=0);
+
+    void setPattern(const class TilingStrategy&);
 
 private:
     QList<Cell*> cellList;

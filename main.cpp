@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QtGui>
 
 #include "tilingwidget.h"

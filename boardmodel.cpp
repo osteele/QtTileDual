@@ -21,17 +21,13 @@ Cell* BoardModel::cell(int row, int col) const
         return 0;
 }
 
-void BoardModel::setCellStates(int strategy)
+#include "tilingstrategy.h"
+
+void BoardModel::setPattern(const TilingStrategy& strategy)
 {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            int state = 0;
-            switch (strategy) {
-            case 0: state = 0; break;
-            case 1: state = 1; break;
-            case 2: state = i^j; break;
-            }
-            cell(i, j)->setState(state % Cell::StateCount);
+            cell(i, j)->setState(strategy.evaluateAt(i, j) % Cell::StateCount);
         }
     }
 }

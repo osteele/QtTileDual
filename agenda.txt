@@ -18,7 +18,6 @@ rojections
 use Qt model / view classes?
 split Cell into model and view
 widget should use observer pattern to update when board changes
-use FP to specify board strategies
 clean up the subpoly mess
 should this use a QtCanvas instead of a scene graph?
 

@@ -11,7 +11,7 @@ class TilingWidget : public QGraphicsView
 
 public:
     TilingWidget();
-    void applyBoardFunction(int n);
+    void setPattern(const class TilingStrategy& strategy);
 
 public slots:
     void onFocusGrid(bool);

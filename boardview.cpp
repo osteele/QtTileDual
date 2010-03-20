@@ -31,7 +31,6 @@ BoardView::BoardView(int rows, int cols)
         }
     }
 #endif
-    model->setCellStates();
     setDualFocus(1);
 }
 
@@ -41,18 +40,19 @@ void BoardView::setDualFocus(qreal s)
     boardDualView->effect->setBlurRadius(1 + (1 - s) * 5);
 }
 
-void BoardView::setCellStates(int strategy)
-{
-    model->setCellStates(strategy);
-    update();
-}
-
 void BoardView::updateCellStates()
 {
     Cell& cell = *model->cell(qrand() % rows, qrand() % cols);
     cell.setState((cell.state + 1) % Cell::StateCount);
     update(); // TODO perf update cell and neighbors
 }
+
+void BoardView::setPattern(const TilingStrategy& strategy)
+{
+    model->setPattern(strategy);
+    update();
+}
+
 
 void BoardView::update(const QRectF& rect)
 {
