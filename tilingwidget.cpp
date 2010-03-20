@@ -30,18 +30,19 @@ TilingWidget::TilingWidget()
 
     board.setCellStates();
 
+    QHBoxLayout *layout = new QHBoxLayout;
     QPushButton *b1 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    b1->move(50, 610);
-    b1->show();
     connect(b1, SIGNAL(clicked()), this, SLOT(setLayout0()));
+    layout->addWidget(b1);
     QPushButton *b2 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    b2->move(150, 610);
-    b2->show();
     connect(b2, SIGNAL(clicked()), this, SLOT(setLayout1()));
+    layout->addWidget(b2);
     QPushButton *b3 = new QPushButton(QApplication::translate("childwidget", "Grid"), this);
-    b3->move(250, 610);
-    b3->show();
     connect(b3, SIGNAL(clicked()), this, SLOT(setLayout2()));
+    layout->addWidget(b3);
+    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout->addLayout(layout, 1, 0, Qt::AlignBottom);
+    this->setLayout(mainLayout);
 
     timerId = startTimer(500);
 }

@@ -1,8 +1,9 @@
 * Basics
-lay out the buttons
+label the buttons, and add more strategies
 add stop, start animation checkbox
 
 * Polish
+layout the grid along with the buttons
 shade the dual cells
 shade grid cells on mouseover
 smooth animation between cell types
